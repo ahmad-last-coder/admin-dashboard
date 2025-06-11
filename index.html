@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">ShopDash</div>
+            <div class="nav-menu">
+                <div class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Products</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-profile">
+                    <img src="img/admin.jpg" alt="User">
+                    <span>Admin</span>
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="cards">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Total Revenue</div>
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="card-value">$24,780</div>
+                    <div class="card-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12% from last month</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Total Orders</div>
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="card-value">1,248</div>
+                    <div class="card-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8% from last month</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Total Customers</div>
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-value">856</div>
+                    <div class="card-change negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>3% from last month</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Conversion Rate</div>
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="card-value">3.6%</div>
+                    <div class="card-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>1.2% from last month</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">Sales Overview</div>
+                        <div class="chart-actions">
+                            <select>
+                                <option>Last 7 Days</option>
+                                <option>Last Month</option>
+                                <option>Last Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="sales-chart" style="height: 300px;">
+                        <!-- Chart will be rendered here -->
+                        <canvas id="salesChartCanvas"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">Revenue Sources</div>
+                        <div class="chart-actions">
+                            <select>
+                                <option>This Month</option>
+                                <option>Last Month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="revenue-chart" style="height: 300px;">
+                        <!-- Chart will be rendered here -->
+                        <canvas id="revenueChartCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="recent-orders">
+                <div class="orders-header">
+                    <div class="chart-title">Recent Orders</div>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-0001</td>
+                            <td>John Doe</td>
+                            <td>12 May 2023</td>
+                            <td>$120.00</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td><i class="fas fa-ellipsis-v"></i></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-0002</td>
+                            <td>Jane Smith</td>
+                            <td>11 May 2023</td>
+                            <td>$85.50</td>
+                            <td><span class="status pending">Pending</span></td>
+                            <td><i class="fas fa-ellipsis-v"></i></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-0003</td>
+                            <td>Robert Johnson</td>
+                            <td>10 May 2023</td>
+                            <td>$210.00</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td><i class="fas fa-ellipsis-v"></i></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-0004</td>
+                            <td>Emily Davis</td>
+                            <td>9 May 2023</td>
+                            <td>$65.25</td>
+                            <td><span class="status cancelled">Cancelled</span></td>
+                            <td><i class="fas fa-ellipsis-v"></i></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-0005</td>
+                            <td>Michael Wilson</td>
+                            <td>8 May 2023</td>
+                            <td>$154.00</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td><i class="fas fa-ellipsis-v"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sample data for charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sales Chart
+            const salesCtx = document.getElementById('salesChartCanvas').getContext('2d');
+            const salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Sales',
+                        data: [12000, 19000, 15000, 18000, 24000, 21000, 25000],
+                        borderColor: '#6c5ce7',
+                        backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChartCanvas').getContext('2d');
+            const revenueChart = new Chart(revenueCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Electronics', 'Clothing', 'Home Goods', 'Books'],
+                    datasets: [{
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [
+                            '#6c5ce7',
+                            '#a29bfe',
+                            '#00b894',
+                            '#fdcb6e'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+
+            // Nav item click handler
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                });
+            });
+
+            // Sample data update (simulating real-time updates)
+            setInterval(() => {
+                const totalRevenue = document.querySelector('.cards .card:first-child .card-value');
+                const currentRevenue = parseInt(totalRevenue.textContent.replace('$', '').replace(',', ''));
+                const newRevenue = currentRevenue + Math.floor(Math.random() * 100);
+                totalRevenue.textContent = '$' + newRevenue.toLocaleString();
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

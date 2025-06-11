@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics | E-Commerce Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">ShopDash</div>
+            <div class="nav-menu">
+                <div class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Products</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </div>
+                <div class="nav-item active">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="page-title">Analytics Dashboard</div>
+                <div class="date-range">
+                    <i class="fas fa-calendar-alt"></i>
+                    <select id="time-period">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="90">Last 90 Days</option>
+                        <option value="365">Last Year</option>
+                    </select>
+                </div>
+                <div class="user-profile">
+                    <img src="img/admin.jpg" alt="User">
+                    <span>Admin</span>
+                </div>
+            </div>
+
+            <!-- Key Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Total Revenue</div>
+                        <i class="fas fa-dollar-sign" style="color: var(--primary);"></i>
+                    </div>
+                    <div class="metric-value">$24,780</div>
+                    <div class="metric-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12% from last period</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Total Orders</div>
+                        <i class="fas fa-shopping-cart" style="color: var(--primary);"></i>
+                    </div>
+                    <div class="metric-value">1,248</div>
+                    <div class="metric-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8% from last period</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Avg. Order Value</div>
+                        <i class="fas fa-tag" style="color: var(--primary);"></i>
+                    </div>
+                    <div class="metric-value">$89.45</div>
+                    <div class="metric-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>5% from last period</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Conversion Rate</div>
+                        <i class="fas fa-percentage" style="color: var(--primary);"></i>
+                    </div>
+                    <div class="metric-value">3.6%</div>
+                    <div class="metric-change negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>1.2% from last period</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">Sales Trend</div>
+                        <div class="chart-actions">
+                            <select id="sales-metric">
+                                <option value="revenue">Revenue</option>
+                                <option value="orders">Orders</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">Revenue by Category</div>
+                        <div class="chart-actions">
+                            <select id="category-period">
+                                <option value="30">Last 30 Days</option>
+                                <option value="90">Last 90 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Products -->
+            <div class="top-products">
+                <div class="products-header">
+                    <div class="chart-title">Top Selling Products</div>
+                    <select id="top-products-period">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="90">Last 90 Days</option>
+                    </select>
+                </div>
+                <div id="top-products-list">
+                    <!-- Top products will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for analytics
+        document.addEventListener('DOMContentLoaded', function() {
+            // Time period selector
+            const timePeriodSelect = document.getElementById('time-period');
+            
+            // Sales Trend Chart
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Revenue',
+                        data: [12000, 19000, 15000, 18000, 24000, 21000, 25000],
+                        borderColor: '#6c5ce7',
+                        backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y'
+                    }, {
+                        label: 'Orders',
+                        data: [120, 190, 150, 180, 240, 210, 250],
+                        borderColor: '#00b894',
+                        backgroundColor: 'rgba(0, 184, 148, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1',
+                        hidden: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Revenue ($)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Orders'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Revenue by Category Chart
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            const categoryChart = new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Electronics', 'Clothing', 'Home Goods', 'Books', 'Other'],
+                    datasets: [{
+                        data: [45, 25, 15, 10, 5],
+                        backgroundColor: [
+                            '#6c5ce7',
+                            '#a29bfe',
+                            '#00b894',
+                            '#fdcb6e',
+                            '#dfe6e9'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: $${value.toLocaleString()} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Top Products List
+            const topProducts = [
+                { id: 1, name: "Wireless Headphones", category: "Electronics", sales: 245, revenue: 24475.50 },
+                { id: 2, name: "Smart Watch Pro", category: "Electronics", sales: 189, revenue: 37798.11 },
+                { id: 3, name: "Cotton T-Shirt", category: "Clothing", sales: 156, revenue: 3898.44 },
+                { id: 4, name: "Ceramic Dinner Set", category: "Home Goods", sales: 87, revenue: 7827.13 },
+                { id: 5, name: "Coffee Table Book", category: "Books", sales: 65, revenue: 2599.35 }
+            ];
+
+            const topProductsList = document.getElementById('top-products-list');
+            topProductsList.innerHTML = topProducts.map((product, index) => `
+                <div class="product-item">
+                    <div class="product-rank">${index + 1}</div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-category">${product.category}</div>
+                    </div>
+                    <div class="product-stats">
+                        <div class="product-sales">${product.sales} sales</div>
+                        <div class="product-revenue">$${product.revenue.toLocaleString()}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Event listeners for filters
+            document.getElementById('sales-metric').addEventListener('change', function(e) {
+                if (e.target.value === 'revenue') {
+                    salesChart.data.datasets[0].hidden = false;
+                    salesChart.data.datasets[1].hidden = true;
+                    salesChart.options.scales.y.display = true;
+                    salesChart.options.scales.y1.display = false;
+                } else {
+                    salesChart.data.datasets[0].hidden = true;
+                    salesChart.data.datasets[1].hidden = false;
+                    salesChart.options.scales.y.display = false;
+                    salesChart.options.scales.y1.display = true;
+                }
+                salesChart.update();
+            });
+
+            timePeriodSelect.addEventListener('change', function() {
+                // In a real app, this would fetch new data based on the selected period
+                updateMetrics(this.value);
+            });
+
+            // Function to update metrics based on time period
+            function updateMetrics(days) {
+                // These would normally come from an API call
+                const metricsData = {
+                    '7': { revenue: 5870, orders: 245, avgOrder: 89.45, conversion: 3.6 },
+                    '30': { revenue: 24780, orders: 1248, avgOrder: 89.45, conversion: 3.6 },
+                    '90': { revenue: 75640, orders: 3820, avgOrder: 89.45, conversion: 3.6 },
+                    '365': { revenue: 298500, orders: 15200, avgOrder: 89.45, conversion: 3.6 }
+                };
+
+                const data = metricsData[days];
+                
+                document.querySelector('.metric-card:nth-child(1) .metric-value').textContent = `$${data.revenue.toLocaleString()}`;
+                document.querySelector('.metric-card:nth-child(2) .metric-value').textContent = data.orders.toLocaleString();
+                document.querySelector('.metric-card:nth-child(3) .metric-value').textContent = `$${data.avgOrder.toFixed(2)}`;
+                document.querySelector('.metric-card:nth-child(4) .metric-value').textContent = `${data.conversion}%`;
+            }
+
+            // Nav item click handler
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
